@@ -1,0 +1,152 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage [warn] {mathtext}
+\usepackage{graphicx}
+\usepackage[english, russian]{babel}
+\setlength{\parindent}{0pt}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{booktabs}
+
+\title{Дискретная математика. Лекция 08.04.}
+\author{С. В. Ткаченко}
+\date{08.04.2022}
+
+\begin{document}
+	\maketitle
+	
+	\begin{center}
+	\subsection*{\textbf{Системы булевых функций}}
+	\end{center}
+	
+	Система булевых функций $\{ f_1, \dots f_m \}$ называется \textit{полной},
+	если любая булева функция может быть выражена через функции $f_1, \dots , f_m$
+	с помощью \textit{суперпозиций}.\\
+	Пусть $K^0 = \{  f_1 (x_1, \dots, x_{k_1}), f_2 (x_1, \dots, x_{k_2}) \dots, f_m (x_1, \dots, x_{k_m})\}$
+	- конечная система булевых функций.\\
+	Функция $f$ называется {\fboxsep=0pt\colorbox{green!50}{\strut суперпозицией ранга 1}}
+	функций $f_1, \dots, f_m$, если она может быть получена одним из следующих способов:\\
+	1) замена переменной $x_j$ на некоторую переменную $y$ в любой функции
+	$f_i \in K^0 : f = f_i (x_1 \dots, x_{j-1}, y, x_{j+1}, \dots, x_{k_i})$, где $y$
+	может совпадать с любой переменной;\\
+	2) замена переменной $x_j$ на некоторую функцию $f_1 (1 \leq l \leq m)$ в любой функции
+	$f_i \in K^0$:\\
+	$f = f_i(x_1, \dots, x_{j_1}, f_1(x_1, \dots, x_{k_1}), x_{j+1}, \dots, x_{k_i})$\\\\
+	\textbf{Теорема 10 (теорема Поста).} Для того чтобы система булевых функций
+	$\{f_1, \dots, f_m\}$ была полной, необходимо и достаточно, чтобы для каждого из
+	классов $T_0, T_1, S, M, L$ нашлась хотя бы одна функция $f_i$ из системы, не
+	принадлежащая этому классу.\\\\
+	Система булевых функций $\{f_1, \dots, f_m\}$ является полной, если в каждом
+	столбце таблицы
+
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|
+				>{\columncolor[HTML]{867AA7}}l |
+				>{\columncolor[HTML]{8799AF}}l |
+				>{\columncolor[HTML]{DAD65E}}l |
+				>{\columncolor[HTML]{B0746E}}l |
+				>{\columncolor[HTML]{CAA44B}}l |
+				>{\columncolor[HTML]{A5C7C1}}l |}
+			\hline
+			$f$                                                                                    & $T_0$ & $T_1$ & $S$ & $M$ & $L$ \\ \hline
+			$f_1$                                                                                  &       &       &     &     &     \\ \hline
+			\begin{tabular}[c]{@{}l@{}}$\dots$ \\ $f_m$\end{tabular} &       &       &     &     &     \\ \hline
+		\end{tabular}
+	\end{table}
+
+	есть хотя бы один минус (<<->>).
+	\newpage
+	\textbf{\textit{\underline{Пример.}}}\\
+	Проверить на полноту систему функций $\{0, 1, \overline{x}\}$.
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			\rowcolor[HTML]{BC8EB0} 
+			$x$ & 0 & 1 & $\overline{x}$ \\ \hline
+			\rowcolor[HTML]{CEB077} 
+			0   & 0 & 1 & 1              \\ \hline
+			\rowcolor[HTML]{A1BC96} 
+			1   & 0 & 1 & 0              \\ \hline
+		\end{tabular}
+	\end{table}
+
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|
+				>{\columncolor[HTML]{867AA7}}l |
+				>{\columncolor[HTML]{8799AF}}l |
+				>{\columncolor[HTML]{DAD65E}}l |
+				>{\columncolor[HTML]{B0746E}}l |
+				>{\columncolor[HTML]{CAA44B}}l |
+				>{\columncolor[HTML]{A5C7C1}}l |}
+			\hline
+			$f$            & $T_0$ & $T_1$ & $S$ & $M$ & $L$ \\ \hline
+			0              & $+$   & $-$   & $-$ & $+$ & $+$ \\ \hline
+			1              & $-$   & $+$   & $-$ & $+$ & $+$ \\ \hline
+			$\overline{x}$ & $-$   & $-$   & $+$ & $-$ & $+$ \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	Так как классу $L$ принадлежат все три функции, то данная система функций не
+	является полной.
+	\\\\
+	1) $T_0$ - класс булевых функций $f(x_1, \dots, x_n)$, сохраняющих константу 0:
+	$$f(0, \dots, 0) = 0.$$
+	
+	2) $T_1$ - класс булевых функций $f(x_1, \dots, x_n)$, сохраняющих константу 1:
+	$$f(1, \dots, 1) = 1.$$
+	
+	3) S - класс самодвойственных функций:
+	$$f^* (x_1, \dots, x_n) = f (x_1, \dots, x_n).$$
+	
+	4) M - класс монотонных функций\\
+	Введем отношение частичного порядка на множестве оценок списка переменных
+	$(x_1, \dots, x_n).$\\
+
+	\begin{center}
+		Оценка $\alpha = ({\alpha}_1, \dots, {\alpha}_n)$ \textit{предшествует}\\
+		оценке $\beta = ({\beta}_1, \dots, {\beta}_n)$,\\
+		если ${\alpha}_i \leq {\beta}_i$,
+	\end{center}
+	где ${\alpha}_i \in \{0, 1\}$, ${\beta}_i \in \{0, 1\}$, $i = 1, \dots, n$.\\
+	Обозначение: $\alpha \prec \beta$.
+	\newpage
+	\textbf{\textit{\underline{Пример.}}}
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|l|l|l|}
+			\hline
+			$x_1$ & $x_2$ & Предшествование                                                  \\ \hline
+			0     & 0     & $(0, 0)  \prec (0, 1), (0, 0) \prec (1, 0), (0, 0) \prec (1, 1)$ \\ \hline
+			0     & 1     & $(0, 1) \prec (1, 1)$                                            \\ \hline
+			1     & 0     & $(1, 0) \prec (1, 1)$                                            \\ \hline
+			1     & 1     & $-$                                                          \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	Функция $f(x_1, \dots, x_n)$ называется \textit{монотонной}, если для любых оценок $\alpha, \beta$,
+	находящихся в отношении предшествования $(\alpha \prec \beta)$, выполняется неравенство
+	$f(\alpha) \leq f(\beta)$.
+	\\\\
+	5) L - класс линейных функций\\
+	
+	Функция $f(x_1, \dots, x_n)$ называется \textit{линейной}, если полином Жегалкина имеет вид
+	
+	$$P(x_1, \dots, x_n) = a_0 \oplus \sum\limits_{i=1}^{n} a_i \; \wedge \; x_i \; .$$
+	$$P(x_1, \dots, x_n) = a_0 \oplus a_1 x_1 \oplus a_2 x_2 \oplus \dots \oplus a_n x_n.$$
+	
+	\textbf{\textit{\underline{Пример.}}}\\\\
+	1. Константа 0 и константа 1 - линейные функции:
+	
+	$$f_1 (x_1, \dots, x_n) = 0, \; P_1 (x_1, \dots, x_n) = 0.$$
+	$$f_2 (x_1, \dots, x_n) = 1, \; P_2 (x_1, \dots, x_n) = 1.$$
+	
+	2. $f_3 (x, y) = x \oplus y$ - линейная функция: $P_3 (x, y) = x \oplus y,$\\
+	$f_4 (x, y) = x \sim y$ - линейная функция: $P_4 (x, y) = 1 \oplus x \oplus y.$
+	\\\\
+	3. $f_5 (x, y) = xy$ - нелинейная функция: $P_5 (x, y) = xy,$\\
+	$f_6 (x, y) = x \vee y$ - нелинейная функция: $P_6 (x, y) = x \oplus y \oplus xy.$
+	
+\end{document}
