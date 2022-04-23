@@ -1,0 +1,255 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage [warn] {mathtext}
+\usepackage{graphicx}
+\usepackage[english, russian]{babel}
+\setlength{\parindent}{0pt}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{booktabs}
+\usepackage{diagbox}
+
+\title{Дискретная математика. Лекция 22.04.}
+\author{С. В. Ткаченко}
+\date{22.04.2022}
+
+\begin{document}
+	\maketitle
+	\begin{center}
+	\section*{Минимизация булевых функций}
+	\subsection*{Непосредственная минимизация}
+	\end{center}
+	Метод непосредственной минимизации основан на применении равносильностей алгебры логики.
+	Функция может быть задана в ДНФ, КНФ, СДНФ, СКНФ.\\
+	\textit{\textbf{\underline{Пример.}}}
+	
+	\begin{table}[ht]
+		\centering
+		а) $f(x, y) = x \rightarrow (y \wedge x)$\\
+		\vspace{5pt}
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			x & y & $y \wedge x$ & $x \rightarrow (y \wedge x)$ \\ \hline
+			0 & 0 & 0            & 1                            \\ \hline
+			0 & 1 & 0            & 1                            \\ \hline
+			1 & 0 & 0            & 0                            \\ \hline
+			1 & 1 & 1            & 1                            \\ \hline
+		\end{tabular}
+	\end{table}
+
+	ДНФ:
+	\begin{center}
+	$f(x, y) = [(\bar{x} \wedge \bar{y}) \vee (\bar{x} \wedge y)] \vee (x \wedge y) =$\\
+	$= [\bar{x} \wedge (\bar{y} \vee y)] \vee (x \wedge y) =$\\
+	$= [\bar{x} \wedge 1] \vee (x \wedge y) = \bar{x} \vee xy;$
+	\end{center}
+	
+	КНФ:
+	\begin{center}
+	$f(x, y) = \bar{x} \vee y.$
+	\end{center}
+	
+	\begin{table}[ht]
+		\centering
+		б) $f(x, y) = x \downarrow y$\\
+		\vspace{5pt}
+		\begin{tabular}{|l|l|l|}
+			\hline
+			x & y & $x \downarrow y$ \\ \hline
+			0 & 0 & 1                \\ \hline
+			0 & 1 & 0                \\ \hline
+			1 & 0 & 0                \\ \hline
+			1 & 1 & 0                \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	ДНФ:
+	\begin{center}
+	$f(x, y) = \bar{x} \wedge \bar{y};$
+	\end{center}
+	
+	КНФ:
+	\begin{center}
+	$f(x, y) = (x \vee \bar{y}) \wedge [(\bar{x} \vee y) \wedge (\bar{x} \vee \bar{y})] =$\\
+	$= (x \vee \bar{y}) \wedge [\bar{x} \vee (y \wedge \bar{y})] = (x \vee \bar{y}) \wedge [\bar{x} \vee 0] =$\\
+	$= (x \vee \bar{y}) \wedge \bar{x} = (\bar{x} \wedge x) \vee (\bar{x} \wedge \bar{y}) =$\\
+	$= 0 \vee (\bar{x} \wedge \bar{y}) = \bar{x} \wedge \bar{y}.$
+	\end{center}
+
+	\begin{center}
+	\subsection*{Карты Карно}
+	Карты Карно были изобретены в 1952 американским ученым Эдвардом В. Вейчем (8 сентября 1924 - 23 декабря 2013) и
+	усовершенствованы в 1953 американским физиком Морисом Карно (род. 4 октября 1924 года, Нью-Йорк); использовались
+	для упрощения цифровых электронных схем.
+	\end{center}
+	
+	Карта Карно имеет вид
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\diagbox{x}{yz} & 00 & 01 & 11 & 10 \\ \hline
+			0    &    &    &    &    \\ \hline
+			1    &    &    &    &    \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	значения yz подчиняются \textbf{двоичному коду Грея:}\\
+	любые два соседних кода различаются ровно в одном разряде.\\\\
+	\textit{Правильная конфигурация} - это прямоугольник, который состоит только из 1 или только из 0.\\\\
+	Этот прямоугольник может быть расположен горизонтально или вертикально.\\\\
+	Этот прямоугольник может быть квадратом.\\\\
+	Площадь прямоугольника: $2^{n-i}, i = 0, \dots, n,$ где $n$ - число переменных в функции.
+	
+	\begin{center}
+	\subsection*{Правила определения правильной конфигурации}
+	\end{center}
+	1. В правильной конфигурации возможно объединение крайних полей, распложенных на противоположных
+	сторонах карты.
+	\\\\
+	2. Число правильных конфигураций должно быть минимально, а площадь каждой конфигурации - максимальна.
+	\\\\
+	3. При объединении полей, в которых стоят единицы, булева функция записывается в ДНФ значений переменных,
+	не меняющихся в пределах правильной конфигурации.
+	\\\\
+	4. При объединении полей, в которых стоят нули, булева функция записывается в КНФ инверсных значений переменных,
+	не меняющихся в пределах правильной конфигурации.
+	\\\\
+	\textit{\textbf{\underline{Пример.}}}
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			x & y & z & $(x \wedge (y \vee \bar{z})) \oplus (\bar{x}|z)$ \\ \hline
+			0 & 0 & 0 & 1                                                \\ \hline
+			0 & 0 & 1 & 0                                                \\ \hline
+			0 & 1 & 0 & 1                                                \\ \hline
+			0 & 1 & 1 & 0                                                \\ \hline
+			1 & 0 & 0 & 0                                                \\ \hline
+			1 & 0 & 1 & 1                                                \\ \hline
+			1 & 1 & 0 & 0                                                \\ \hline
+			1 & 1 & 1 & 0                                                \\ \hline
+		\end{tabular}
+	\end{table}
+	СДНФ: $f(x, y, z) = (\bar{x} \wedge \bar{y} \wedge \bar{z}) \vee (\bar{x} \wedge y \wedge \bar{z}) \vee (x \wedge \bar{y} \wedge z);$\\
+	СКНФ: $f(x, y, z) = (x \vee y \vee \bar{z}) \wedge (x \vee \bar{y} \vee \bar{z}) \wedge (\bar{x} \vee y \vee z) \wedge$\\
+	$\wedge (\bar{x} \vee \bar{y} \vee z) \wedge (\bar{x} \vee \bar{y} \vee \bar{z}).$
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			x & y & z & $f(x, y, z)$ \\ \hline
+			0 & 0 & 0 & 1            \\ \hline
+			0 & 0 & 1 & 0            \\ \hline
+			0 & 1 & 0 & 1            \\ \hline
+			0 & 1 & 1 & 0            \\ \hline
+			1 & 0 & 0 & 0            \\ \hline
+			1 & 0 & 1 & 1            \\ \hline
+			1 & 1 & 0 & 0            \\ \hline
+			1 & 1 & 1 & 0            \\ \hline
+		\end{tabular}
+	\end{table}
+
+	\begin{table}[ht]
+		\centering
+		Карта Карно\\
+		\vspace{5pt}
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\diagbox{x}{yz} & 00 & 01 & 11 & 10 \\ \hline
+			0   & 1  & 0  & 0  & 1  \\ \hline
+			1   & 0  & 1  & 0  & 0  \\ \hline
+		\end{tabular}
+	\end{table}
+	\newpage
+	\begin{table}[ht]
+		\centering
+		1)\\
+		\vspace{5pt}
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\diagbox{x}{yz} & 00                        & 01 & 11 & 10                        \\ \hline
+			0   & \cellcolor[HTML]{D5616D}1 & 0  & 0  & \cellcolor[HTML]{D5616D}1 \\ \hline
+			1   & 0                         & 1  & 0  & 0                         \\ \hline
+		\end{tabular}
+		\vspace{5pt}
+		\\$\bar{x} \wedge \bar{z}$
+	\end{table}
+
+	\begin{table}[ht]
+		\centering
+		2)\\
+		\vspace{5pt}
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\diagbox{x}{yz} & 00 & 01                        & 11 & 10 \\ \hline
+			0   & 1  & 0                         & 0  & 1  \\ \hline
+			1   & 0  & \cellcolor[HTML]{D5616D}1 & 0  & 0  \\ \hline
+		\end{tabular}
+		\vspace{5pt}
+		\\$x \wedge \bar{y} \wedge z$
+	\end{table}
+
+	ДНФ: $f(x, y, z) = (\overline{xz}) \vee (x\bar{y}z)$
+	
+	\begin{table}[ht]
+		\centering
+		Карта Карно\\
+		\vspace{5pt}
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\diagbox{x}{yz} & 00 & 01 & 11 & 10 \\ \hline
+			0   & 1  & 0  & 0  & 1  \\ \hline
+			1   & 0  & 1  & 0  & 0  \\ \hline
+		\end{tabular}
+	\end{table}
+
+	\begin{table}[h!]
+		\centering
+		1)\\
+		\vspace{5pt}
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			xyz & 00 & 01                        & 11                        & 10 \\ \hline
+			0   & 1  & \cellcolor[HTML]{EBDC25}0 & \cellcolor[HTML]{EBDC25}0 & 1  \\ \hline
+			1   & 0  & 1                         & 0                         & 0  \\ \hline
+		\end{tabular}
+		\vspace{5pt}
+		\\$x \vee \bar{z}$
+	\end{table}
+
+	\begin{table}[h!]
+		\centering
+		2)\\
+		\vspace{5pt}
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			xyz & 00 & 01 & 11                        & 10 \\ \hline
+			0   & 1  & 0  & \cellcolor[HTML]{EBDC25}0 & 1  \\ \hline
+			1   & 0  & 1  & \cellcolor[HTML]{EBDC25}0 & 0  \\ \hline
+		\end{tabular}
+		\vspace{5pt}
+		\\$\bar{y} \vee \bar{z}$
+	\end{table}
+	
+	\newpage
+	
+	\begin{table}[h!]
+		\centering
+		3)\\
+		\vspace{5pt}
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			xyz & 00                        & 01 & 11 & 10                        \\ \hline
+			0   & 1                         & 0  & 0  & 1                         \\ \hline
+			1   & \cellcolor[HTML]{EBDC25}0 & 1  & 0  & \cellcolor[HTML]{EBDC25}0 \\ \hline
+		\end{tabular}
+		\vspace{5pt}
+		\\$\bar{x} \vee z$
+	\end{table}
+	
+	КНФ: $f(x, y, z) = (x \vee \bar{z}) \wedge (\bar{y} \vee \bar{z}) \wedge (\bar{x} \vee z).$
+	
+\end{document}
