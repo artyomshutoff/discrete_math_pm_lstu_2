@@ -1,0 +1,348 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage [warn] {mathtext}
+\usepackage{graphicx}
+\usepackage[english, russian]{babel}
+\setlength{\parindent}{0pt}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{booktabs}
+\usepackage{diagbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+
+\title{Дискретная математика. Лекция 06.05.}
+\author{С. В. Ткаченко}
+\date{06.05.2022}
+
+\begin{document}
+	\maketitle
+	\textit{Простой (первичной) импликантой (минималью) функции}
+	$Y = F(x_1, \dots, x_n)$  называется импликанта, которая не склеивается с
+	никакой другой и не поглощается никакой другой импликантой данной функции $Y$.
+	\\\\
+	\textit{\textbf{\underline{Пример.}}}
+	$$Y(x_1, x_2, x_3)= \bar{x}_1 x_2 \bar{x}_3 \vee x_2 \bar{x}_3$$
+	$y_1 (x_1, x_2, x_3) = \bar{x}_1 x_2 \bar{x}_3$ - импликанта функции $Y$,
+	$y_2 (x_1, x_2, x_3) = x_2 \bar{x}_3$ - простая импликанта функции $Y$, т.к.
+	она поглощает импликанту $y_1$:
+	$$\bar{x}_1 x_2 \bar{x}_3 \vee x_2 \bar{x}_3 = x_2 \bar{x}_3 \vee (x_2 \bar{x}_3 \wedge \bar{x}_1)
+	= x_2 \bar{x}_3$$
+	\textit{Сокращенная} ДНФ (СкДНФ) - это ДНФ функции в виде дизъюнкции всех ее простых импликант.
+	СкДНФ в общем случае избыточна, некоторые из составляющих ее простых импликант могут быть
+	исключены при сохранении эквивалентности формул.\\
+	
+	\textit{Тупиковая} ДНФ (ТДНФ) - это ДНФ, из которой нельзя исключить не одной простой
+	импликанты без потери эквивалентности формулы.\\
+	
+	\textit{Минимальная} ДНФ (МДНФ) - это ТДНФ, содержащая минимальное число символов среди
+	возможных ТДНФ функции.\\
+	
+	Одной из важнейших интерпретаций булевых алгебр является \textit{булева алгебра переключательных
+	функций}. Первоначально этот математический аппарат был применен для анализа и синтеза
+	множества релейно-контактных схем с операциями последовательного (конъюнкции) и параллельного
+	(дизъюнкция) соединения контактов и операцией дополнения. 1 - проводник, 0 - разрыв.\\
+	Множество всех переключательных функций (ПФ) обозначают $P2$.\\
+	Алгебра $(P2, \; \wedge, \; \vee, \; \overline{\phantom{x}})$ называется \textit{булевой алгеброй
+	переключательных функций.}\\
+	
+	\textit{Импликантой} переключательной функции $Y = F(x_1, \dots, x_n)$ называется функция
+	$v = f(x_1, \dots, x_n)$, которая обращается в 1 на некотором подмножестве единичных наборов
+	функции $Y$.\\
+	
+	\newpage
+	\textit{\textbf{\underline{Пример.}}}
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\multicolumn{1}{|l|}{$x_1$} & \multicolumn{1}{l|}{$x_2$} & \multicolumn{1}{l|}{$x_3$} & \multicolumn{1}{l|}{$f(x_1, x_2, x_3)$} \\ \hline
+			0 & 0 & 0 & 1 \\ \hline
+			0 & 0 & 1 & 1 \\ \hline
+			0 & 1 & 0 & 0 \\ \hline
+			0 & 1 & 1 & 0 \\ \hline
+			1 & 0 & 0 & 1 \\ \hline
+			1 & 0 & 1 & 1 \\ \hline
+			1 & 1 & 0 & 0 \\ \hline
+			1 & 1 & 1 & 0 \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	Импликанты данной функции: $\bar{x}_1 \wedge \bar{x}_2 \wedge \bar{x}_3$,
+	$\; \bar{x}_1 \wedge \bar{x}_2 \wedge \bar{x}_3$, $\; x_1 \wedge \bar{x}_2 \wedge x_3$,
+	$\; x_1 \wedge \bar{x}_2 \wedge x_3$ - элементарные конъюнкции.\\
+	Также импликантами являются конъюнкции, полученные в результате склеивания (формулы расщепления)
+	или поглощения одних конъюнкций другими.\\
+	
+	\textit{\textbf{\underline{Пример.}}}\\\\
+	$((\bar{x}_1 \wedge \bar{x}_2) \wedge \bar{x}_3) \vee ((\bar{x}_1 \wedge \bar{x}_2) \wedge x_3) = \bar{x}_1 \wedge \bar{x}_2.$
+	
+	Метод Квайна - Мак-Класки состоит из двух этапов:\\
+	1. Получение всех простых имликант ПФ (построение СкДНФ).\\
+	2. Поиск всех ТДНФ по импликантной таблице покрытий и выбор их них МДНФ.\\
+	Исходная функция \textbf{должна быть} представлена в СДНФ.\\
+	Каждная элементарная конъюнкция может быть представлена двоичным числом.\\
+	Каждой конъюнкции присваивается \textit{индекс} - число единиц в двоичном
+	представлении конъюнкции.
+	
+	\begin{table}[ht]
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{1}{|l|}{$x_1$} &
+			\multicolumn{1}{l|}{$x_2$} &
+			\multicolumn{1}{l|}{$x_3$} &
+			\multicolumn{1}{l|}{$x_4$} &
+			\multicolumn{1}{l|}{число} &
+			\multicolumn{1}{l|}{индекс} &
+			\multicolumn{1}{l|}{$x_1$} &
+			\multicolumn{1}{l|}{$x_2$} &
+			\multicolumn{1}{l|}{$x_3$} &
+			\multicolumn{1}{l|}{$x_4$} &
+			\multicolumn{1}{l|}{число} &
+			\multicolumn{1}{l|}{индекс} \\ \hline
+			0 & 0 & 0 & 0 & 0 & 0   & 1 & 0 & 0 & 0 & 8  & I   \\ \hline
+			0 & 0 & 0 & 1 & 1 & I   & 1 & 0 & 0 & 1 & 9  & II  \\ \hline
+			0 & 0 & 1 & 0 & 2 & I   & 1 & 0 & 1 & 0 & 10 & II  \\ \hline
+			0 & 0 & 1 & 1 & 3 & II  & 1 & 0 & 1 & 1 & 11 & III \\ \hline
+			0 & 1 & 0 & 0 & 4 & I   & 1 & 1 & 0 & 0 & 12 & II  \\ \hline
+			0 & 1 & 0 & 1 & 5 & II  & 1 & 1 & 0 & 1 & 13 & III \\ \hline
+			0 & 1 & 1 & 0 & 6 & II  & 1 & 1 & 1 & 0 & 14 & III \\ \hline
+			0 & 1 & 1 & 1 & 7 & III & 1 & 1 & 1 & 1 & 15 & IV  \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	Одна и та же конъюнкция может быть склеена с другими несколько раз. При этом
+	компонента, меняющая свое значение, заменяется <<->>.\\
+	
+	\newpage
+	\textit{\textbf{\underline{Пример.}}}\\\\
+	При склеивании 0011 и 0111 получаем 0-11.\\
+	
+	\textit{\textbf{\underline{Пример.}}}\\
+	
+	$$f(x, y, z, t) = \underset{0000 (0, 0)}{\bar{x} \bar{y} \bar{z} \bar{t}} \vee
+	\underset{0001(1, 1)}{\bar{x} \bar{y} \bar{z} t} \vee \underset{0010(2, 1)}{\bar{x} \bar{y} z \bar{t}}
+	\vee \underset{0101(5, \text{\textit{II}})}{\bar{x} y \bar{z} t} \vee$$
+	$$\vee \underset{0111(7, \text{\textit{III}})}{\bar{x} yzt} \vee \underset{1000 (8, 1)}{x \bar{y} \bar{z} \bar{t}}
+	\vee \underset{1010(10, \text{\textit{II}})}{x \bar{y} z \bar{t}} \vee \underset{1110(14, \text{\textit{III}})}{xyz \bar{t}}
+	\vee \underset{1111(15, \text{\textit{IV}})}{xyzt}$$
+
+	\begin{table}[ht]
+		\begin{tabular}{|c|cc|cccccc|}
+			\hline
+			\multirow{2}{*}{Индекс} &
+			\multicolumn{2}{c|}{\multirow{2}{*}{Конъюнкция}} &
+			\multicolumn{6}{c|}{Результат склеивания} \\ \cline{4-9} 
+			&
+			\multicolumn{2}{c|}{} &
+			\multicolumn{3}{c|}{1 шаг} &
+			\multicolumn{3}{c|}{2 шаг} \\ \hline
+			0 &
+			\multicolumn{1}{c|}{0000 (0)} &
+			$\checkmark$ &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}0 и 1\\ 0 и 2\\ 0 и 8\end{tabular}} &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}000- (a)\\ 00-0 (b)\\ -000 (c)\end{tabular}} &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}$\times$\\ $\checkmark$\\ $\checkmark$\end{tabular}} &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}b и f\\ c и e\end{tabular}} &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}-0-0\\ (-0-0)\end{tabular}} &
+			$\times$ \\ \hline
+			\multirow{3}{*}{I} &
+			\multicolumn{1}{c|}{0001 (1)} &
+			$\checkmark$ &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}1 и 5\\ 1 и 10\end{tabular}} &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}0-01 (d)\\ -\end{tabular}} &
+			\multicolumn{1}{c|}{$\times$} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\\ \cline{2-9} 
+			&
+			\multicolumn{1}{c|}{0010 (2)} &
+			$\checkmark$ &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}2 и 5\\ 2 и 10\end{tabular}} &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}-\\ -010 (e)\end{tabular}} &
+			\multicolumn{1}{c|}{$\checkmark$} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\\ \cline{2-9} 
+			&
+			\multicolumn{1}{c|}{1000 (8)} &
+			$\checkmark$ &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}8 и 5\\ 8 и 10\end{tabular}} &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}-\\ 10-0 (f)\end{tabular}} &
+			\multicolumn{1}{c|}{$\checkmark$} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\\ \hline
+			\multirow{2}{*}{II} &
+			\multicolumn{1}{c|}{0101 (5)} &
+			$\checkmark$ &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}5 и 7\\ 5 и 14\end{tabular}} &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}01-1 (g)\\ -\end{tabular}} &
+			\multicolumn{1}{c|}{$\times$} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\\ \cline{2-9} 
+			&
+			\multicolumn{1}{c|}{1010 (10)} &
+			$\checkmark$ &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}10 и 7\\ 10 и 14\end{tabular}} &
+			\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}-\\ 1-10 (h)\end{tabular}} &
+			\multicolumn{1}{c|}{$\times$} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\\ \hline
+			\multirow{2}{*}{III} &
+			\multicolumn{1}{c|}{0111 (7)} &
+			$\checkmark$ &
+			\multicolumn{1}{c|}{7 и 15} &
+			\multicolumn{1}{c|}{-111 (i)} &
+			\multicolumn{1}{c|}{$\times$} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\\ \cline{2-9} 
+			&
+			\multicolumn{1}{c|}{1110 (14)} &
+			$\checkmark$ &
+			\multicolumn{1}{c|}{14 и 15} &
+			\multicolumn{1}{c|}{111- (j)} &
+			\multicolumn{1}{c|}{$\times$} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\\ \hline
+			IV &
+			\multicolumn{1}{c|}{1111 (15)} &
+			$\checkmark$ &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\multicolumn{1}{c|}{} &
+			\\ \hline
+		\end{tabular}
+	\end{table}
+	
+	\underline{СкДНФ:}
+	$$f(x, y, z, t) = \underset{000-}{\bar{x} \bar{y} \bar{z}} \vee
+	\underset{0-01}{\bar{x} \bar{z} t} \vee \underset{01-1}{\bar{x} yt} \vee
+	\underset{1-10}{xz \bar{t}} \vee \underset{-111}{yzt} \vee
+	\underset{111-}{xyz} \vee \underset{-0-0}{\bar{y} \bar{t}}$$
+	
+	\textbf{Второй этап} заключается в построении ТДНФ (МДНФ) по импликантной
+	таблице покрытий.\\
+	Импликантная таблица. Строки таблицы отмечаются простыми импликантами
+	(полученными на первом этапе, табл. 1), столбцы - элементарными конъюнкциями
+	(ЭК) из СДНФ (первоначальные). На пересечении $i - й$ строки и $j - го$
+	столбца ставится 1 или любой другой символ, если $i - я$ импликанта
+	покрывает (формула поглощения) $j - ю$ ЭК из СДНФ.
+	\newpage
+	
+	\begin{center}
+		\textbf{Правила}
+	\end{center}
+	
+	\quad П1. Если есть столбец, который покрывается только одной импликантой $y_i$,
+	то $y_i$ - \textbf{\textit{обязательная импликанта}}, которая включается в
+	ТДНФ. Строку $y_i$ и столбцы, покрываемые $y_i$, удалить из таблицы.\par
+	\quad П2. Если импликанта $y_i$ покрывает подмножество столбцов $V_i$,
+	$y_k$ покрывает подмножество столбцов $V_k$, при этом $V_i \leqslant V_k$,
+	тогда $i-ю$ строку исключить из таблицы.\par
+	\quad П3. Если $j-й$ столбец покрывается подмножеством строк $Y_i$, $m-й$
+	столбец - подмножеством строк $Y_m$, при этом $Y_i \leqslant Y_m$, тогда
+	$m-й$ столбец исключить из таблицы.\\
+	
+	\textbf{2 этап}
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|cc|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{2}{|c|}{\multirow{2}{*}{}} & А    & Б    & В    & Г    & Д    & Е    & Ж    & З    & И    \\ \cline{3-11} 
+			\multicolumn{2}{|c|}{}                  & 0000 & 0001 & 0010 & 0101 & 0111 & 1000 & 1010 & 1110 & 1111 \\ \hline
+			\multicolumn{1}{|c|}{1}      & 000-     & *    & *    &      &      &      &      &      &      &      \\ \hline
+			\multicolumn{1}{|c|}{2}      & 0-01     &      & *    &      & *    &      &      &      &      &      \\ \hline
+			\multicolumn{1}{|c|}{3}      & 01-1     &      &      &      & *    & *    &      &      &      &      \\ \hline
+			\multicolumn{1}{|c|}{4}      & 1-10     &      &      &      &      &      &      & *    & *    &      \\ \hline
+			\multicolumn{1}{|c|}{5}      & -111     &      &      &      &      & *    &      &      &      & *    \\ \hline
+			\multicolumn{1}{|c|}{6}      & 111-     &      &      &      &      &      &      &      & *    & *    \\ \hline
+			\multicolumn{1}{|c|}{7}      & -0-0     & *    &      & *    &      &      & *    & *    &      &      \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	П1. Столбцы В и Е покрываются только одной строкой 7. Следовательно, импликанта -0-0 является \textbf{обязательной},
+	она включается в МДНФ. Удаляем строку 7 и столбцы, которые она покрывает: А, В, Е, Ж.
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|ll|l|l|l|l|l|}
+			\hline
+			\multicolumn{2}{|l|}{\multirow{2}{*}{}} & Б    & Г    & Д    & З    & И    \\ \cline{3-7} 
+			\multicolumn{2}{|l|}{}                  & 0001 & 0101 & 0111 & 1110 & 1111 \\ \hline
+			\multicolumn{1}{|l|}{1}      & 000-     & *    &      &      &      &      \\ \hline
+			\multicolumn{1}{|l|}{2}      & 0-01     & *    & *    &      &      &      \\ \hline
+			\multicolumn{1}{|l|}{3}      & 01-1     &      & *    & *    &      &      \\ \hline
+			\multicolumn{1}{|l|}{4}      & 1-10     &      &      &      & *    &      \\ \hline
+			\multicolumn{1}{|l|}{5}      & -111     &      &      & *    &      & *    \\ \hline
+			\multicolumn{1}{|l|}{6}      & 111-     &      &      &      &      & *    \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	П2. Строка 1 покрывает столбец Б, строка 2 покрывает столбцы Б и Г. Следовательно, удаляем строк 1.
+	Аналогично, строка 4 покрывает столбец 3, строка 6 покрывает столбцы З и И. Удаляем строку 4.
+	
+	\newpage
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|ll|l|l|l|l|l|}
+			\hline
+			\multicolumn{2}{|l|}{\multirow{2}{*}{}} & Б    & Г    & Д    & З    & И    \\ \cline{3-7} 
+			\multicolumn{2}{|l|}{}                  & 0001 & 0101 & 0111 & 1110 & 1111 \\ \hline
+			\multicolumn{1}{|l|}{2}      & 0-01     & *    & *    &      &      &      \\ \hline
+			\multicolumn{1}{|l|}{3}      & 01-1     &      & *    & *    &      &      \\ \hline
+			\multicolumn{1}{|l|}{5}      & -111     &      &      & *    &      & *    \\ \hline
+			\multicolumn{1}{|l|}{6}      & 111-     &      &      &      & *    & *    \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	П3. Столбец Б покрыт строкой 2, столбец Г покрыт строками 2 и 3, следовательно, удалим столбец Г.
+	Аналогично, столбец 3 покрыт строкой 6, столбец И покрыт строками 5 и 6, следовательно, удалим
+	столбец И.
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|ll|l|l|l|}
+			\hline
+			\multicolumn{2}{|l|}{\multirow{2}{*}{}} & Б    & Д    & З    \\ \cline{3-5} 
+			\multicolumn{2}{|l|}{}                  & 0001 & 0111 & 1110 \\ \hline
+			\multicolumn{1}{|l|}{2}      & 0-01     & *    &      &      \\ \hline
+			\multicolumn{1}{|l|}{3}      & 01-1     &      & *    &      \\ \hline
+			\multicolumn{1}{|l|}{5}      & -111     &      & *    &      \\ \hline
+			\multicolumn{1}{|l|}{6}      & 111-     &      &      & *    \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	П4. Столбец Б покрыт только строкой 2, столбец 3 покрыт только строкой 6, поэтому
+	импликанты 0-01 и 111- являются \textbf{обязательными}. Удалим строки 2, 6, столбцы
+	Б, З.
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{|ll|l|}
+			\hline
+			\multicolumn{2}{|l|}{\multirow{2}{*}{}} & Д    \\ \cline{3-3} 
+			\multicolumn{2}{|l|}{}                  & 0111 \\ \hline
+			\multicolumn{1}{|l|}{3}      & 01-1     & *    \\ \hline
+			\multicolumn{1}{|l|}{5}      & -111     & *    \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	В итоге получаем 2 ТДНФ
+	\\\\
+	$f_1 (x, y, z, t) = \bar{y} \bar{t} \vee \bar{x} \bar{z} t \vee xyz \vee \bar{x} yt$
+	\\
+	$f_2 (x, y, z, t) = \bar{y} \bar{t} \vee \bar{x} \bar{z} t \vee xyz \vee yzt$
+	\\\\
+	Минимальной является та, которая содержит наименьшее количество символов.
+	
+\end{document}
